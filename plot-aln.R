@@ -54,7 +54,7 @@ aln_dat <- lapply(all_prots, function(ith_prot) {
          pos_prone = ifelse(species == "Escherichia coli", pos_prone, NA),
          pos_prone = ifelse(aa != "-", pos_prone, NA))
 
-cairo_ps("aln.eps", height = 4.8, width = 6.5)
+cairo_pdf("aln.pdf", height = 4.8, width = 6.5)
 ggplot(aln_dat, aes(x = pos, y = species, label = aa, fill = aa_groups)) +
   geom_tile(color = NA) +
   geom_tile(aes(x = pos_prone), color = "black", fill = NA, size = 0.4) +
