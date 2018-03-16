@@ -58,7 +58,8 @@ cairo_pdf("aln.pdf", height = 4.8, width = 6.5)
 ggplot(aln_dat, aes(x = pos, y = species, label = aa, fill = aa_groups)) +
   geom_tile(color = NA) +
   geom_tile(aes(x = pos_prone), color = "black", fill = NA, size = 0.4) +
-  geom_text(size = 2.1, family = "Courier", fontface="bold") +
+  #geom_text(size = 2.1, family = "Courier", fontface="bold") +
+  geom_text(size = 2.1) +
   facet_wrap(~ pos_disc, ncol = 1, scales = "free_x") +
   scale_x_continuous("Position", expand = c(0, 0)) +
   scale_fill_manual(values = cols) +
