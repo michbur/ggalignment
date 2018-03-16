@@ -57,13 +57,12 @@ aln_dat <- lapply(all_prots, function(ith_prot) {
 cairo_pdf("aln.pdf", height = 4.8, width = 6.5)
 ggplot(aln_dat, aes(x = pos, y = species, label = aa, fill = aa_groups)) +
   geom_tile(color = NA) +
+  facet_wrap(~ pos_disc, ncol = 1, scales = "free_x") +
   geom_tile(aes(x = pos_prone), color = "black", fill = NA, size = 0.4) +
   #geom_text(size = 2.1, family = "Courier", fontface="bold") +
-  geom_text(size = 2.1) +
-  facet_wrap(~ pos_disc, ncol = 1, scales = "free_x") +
+  geom_text(size = 2.1)  +
   scale_x_continuous("Position", expand = c(0, 0)) +
   scale_fill_manual(values = cols) +
-  scale_shape_manual(values = c(NA, 16), guide = FALSE) +
   guides(fill = guide_legend(nrow = 1, byrow = TRUE, override.aes = list(color = "black"))) + 
   theme_bw(base_size = 7) +
   theme(legend.position = "bottom",
