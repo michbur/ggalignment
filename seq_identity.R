@@ -1,5 +1,6 @@
 library(dplyr)
 library(ggplot2)
+library(reshape2)
 
 compute_pid <- function(file) {
   all_lines <- readLines(file)
@@ -26,14 +27,27 @@ compute_pid <- function(file) {
     do.call(rbind, .)
 }
 
-rbind(compute_pid("csga.syn.aln") %>% 
+pid_data <- rbind(compute_pid("csga.syn.aln") %>% 
         mutate(protein = "CsgA"),
       compute_pid("CsgC_sekwencje.fasta.aln") %>% 
         mutate(protein = "CsgC")) %>% 
-  #mutate(S1 = factor(S1, levels = sort(unique(S1))),
-  #       S2 = factor(S2, levels = levels(S1)[-1])) %>% 
-  ggplot(aes(x = S1, y = S2, fill = pid, label = round(pid, 2))) +
+  mutate(S1 = sub(">", "", S1),
+         S2 = sub(">", "", S2))
+
+ggplot(pid_data, aes(x = S1, y = S2, fill = pid, label = round(pid, 2))) +
   geom_tile(color = "black") +
   geom_text(color = "red") +
   facet_wrap(~ protein) +
-  theme_bw()
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+pid_data %>% 
+  filter(S1 != "Alpha-synuclein") %>%
+  dcast(S1 + S2 ~ protein, value.var = "pid") %>%  
+  mutate(pid = CsgA - CsgC) %>% 
+  ggplot(aes(x = S1, y = S2, fill = pid, label = round(pid, 2))) +
+  geom_tile(color = "black") +
+  geom_text(color = "red") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
