@@ -1,6 +1,6 @@
 library(ggtree)
 
-tr <- read.tree("./change_trees/MALEDRZEWKO.aln.treefile")
+tr <- read.tree("./change_trees/MALEDRZEWKO_nice_names.aln.treefile")
 
 cairo_pdf("tree.pdf", height = 8.6, width = 6.5)
 ggtree(tr) + 
