@@ -1,6 +1,6 @@
 library(dplyr)
 
-all_lines <- readLines("./change_trees/csgcTREE.aln")
+all_lines <- readLines("./change_trees/MALEDRZEWKO.aln")
 
 prot_id <- cumsum(grepl("^>", all_lines))
 
@@ -13,7 +13,7 @@ ids <- sapply(all_prots, first) %>%
   sub("/", "_", x = .)
 
 ids_only <- sapply(all_prots, first) %>% 
-  strsplit("/") %>% 
+  strsplit("[/ ]") %>% 
   sapply(first) %>% 
   sub(">", "", x = .)
 
@@ -27,10 +27,10 @@ name_df <- data.frame(id = ids,
                       stringsAsFactors = FALSE) %>% 
   mutate(full_name = gsub(" ", "_", full_name))
 
-tree_lines <- readLines("./change_trees/csgcTREE.aln.treefile")
+tree_lines <- readLines("./change_trees/MALEDRZEWKO.aln.treefile")
 
 for(i in 1L:nrow(name_df)) {
   tree_lines <- sub(name_df[i, "id"], name_df[i, "full_name"], tree_lines)
 }
 
-cat(tree_lines, file = "./change_trees/csgcTREE_nice_names.aln.treefile")
+cat(tree_lines, file = "./change_trees/MALEDRZEWKO_nice_names.aln.treefile")
