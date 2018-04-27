@@ -22,7 +22,10 @@ org_names <- sapply(all_prots, first) %>%
   sapply(last) %>% 
   sub("]", "", x = ., fixed = TRUE)
 
-name_df <- data.frame(id = ids, full_name = paste(ids_only, org_names), stringsAsFactors = FALSE)
+name_df <- data.frame(id = ids, 
+                      full_name = paste(ids_only, org_names), 
+                      stringsAsFactors = FALSE) %>% 
+  mutate(full_name = gsub(" ", "_", full_name))
 
 tree_lines <- readLines("./change_trees/csgcTREE.aln.treefile")
 
