@@ -37,6 +37,8 @@ pid_data <- rbind(compute_pid("csga.syn.aln") %>%
 ggplot(pid_data, aes(x = S1, y = S2, fill = pid, label = round(pid, 2))) +
   geom_tile(color = "black") +
   geom_text(color = "red") +
+  scale_x_discrete("") +
+  scale_y_discrete("") +
   facet_wrap(~ protein) +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
