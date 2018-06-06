@@ -52,21 +52,24 @@ aln_dat <- lapply(all_prots, function(ith_prot) {
          prone = real_pos %in% unlist(region_borders),
          pos_prone = ifelse(prone, pos, NA),
          pos_prone = ifelse(species == "Escherichia coli", pos_prone, NA),
-         pos_prone = ifelse(aa != "-", pos_prone, NA))
+         pos_prone = ifelse(aa != "-", pos_prone, NA)) %>% 
+  mutate(aa_groups_label = letters[as.numeric(aa_groups)])
 
-cairo_pdf("aln.pdf", height = 4.8, width = 6.5)
-ggplot(aln_dat, aes(x = pos, y = species, label = aa, fill = aa_groups)) +
+#cairo_pdf("aln.pdf", height = 4.8, width = 6.5)
+ggplot(aln_dat, aes(x = pos, y = species, label = aa, fill = aa_groups, color = aa_groups_label)) +
   geom_tile(color = NA) +
   facet_wrap(~ pos_disc, ncol = 1, scales = "free_x") +
   geom_tile(aes(x = pos_prone), color = "black", fill = NA, size = 0.4) +
-  #geom_text(size = 2.1, family = "Courier", fontface="bold") +
-  geom_text(size = 2.1)  +
+  geom_text(size = 2.1) +
+  geom_text(size = 2.1, color = "black") +
   scale_x_continuous("Position", expand = c(0, 0)) +
   scale_fill_manual(values = cols) +
-  guides(fill = guide_legend(nrow = 1, byrow = TRUE, override.aes = list(color = "black"))) + 
+  scale_color_manual(values = c(cols[1L:5], "black")) +
+  guides(fill = guide_legend(nrow = 1, byrow = TRUE, override.aes = list(label = "-")),
+         label = guide_legend(nrow = 1, byrow = TRUE)) + 
   theme_bw(base_size = 7) +
   theme(legend.position = "bottom",
         legend.key.size = unit(0.7, "lines"),
         strip.background = element_blank(),
         strip.text.x = element_blank())
-dev.off()
+#dev.off()
